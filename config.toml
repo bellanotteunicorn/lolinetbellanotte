@@ -20,7 +20,7 @@ highlight_code = true
 
 [extra]
 # Put all your custom variables here
-default_authors = ["foobar"]
+default_authors = ["husen"]
 
 navigation = [
     { name = "Home", url = "/" },
@@ -34,7 +34,7 @@ navigation_secondary = [
 title_font = "sans-serif"
 
 # Possible value: sans-serif, serif
-body_font = "serif"
+body_font = "sans-serif"
 
 # Possible value: None, Medium, Large
 publication_cover_style = "Medium"
