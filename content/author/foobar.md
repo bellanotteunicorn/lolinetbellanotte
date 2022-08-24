@@ -1,4 +1,0 @@
-+++
-title = "Foobar"
-render = false
-+++
