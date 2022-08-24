@@ -1,0 +1,17 @@
+{% macro navigation(navlist, type="") %}
+
+<ul class="nav">
+    {% for item in navlist %}
+    <li class="nav-{{ item.name | slugify }}">
+        {% if item.url is matching("^([^:/?#]+)://") %}
+            {# The url is considered as external link #}
+            {% set url = item.url %}
+        {% else %}
+            {% set url = get_url(path=item.url) %}
+        {% endif %}
+        <a href="{{ url }}">{{ item.name }}</a>
+    </li>
+    {% endfor %}
+</ul>
+
+{% endmacro navigation %}

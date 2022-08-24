@@ -1,0 +1,87 @@
+{% import "macros/utils.html" as utils %}
+{% macro postcard(post, index=0, type="") %}
+{# This is a macro used to generate a post "card" which templates loop over to generate a list of posts. #}
+{% set_global design = config.extra.design %}
+
+<article class="post-card post {{ utils::category_class(page=post) }} {{ utils::tag_class(page=post) }} {% if type == "home" and design.feed_layout != "Simple_Grid" and post.extra.cover_image and index == 0 %}post-card-large{% endif %}">
+
+    {% if post.extra.cover_image %}
+    <a class="post-card-image-link" href="{{ post.permalink }}">
+        {{ utils::responsive_img(
+            img_path=post.extra.cover_image,
+            sizes="(max-width: 1000px) 400px, 800px",
+            class="post-card-image",
+            lazy=true,
+            alt=post.extra.cover_image_alt | default(value=post.title),
+            lazy=true) }}
+    </a>
+    {% endif %}
+
+    <div class="post-card-content">
+        <a class="post-card-content-link" href="{{ post.permalink }}">
+            <header class="post-card-header">
+                {% if post.taxonomies.categories %}
+                    <div class="post-card-primary-tag">{{ post.taxonomies.categories | first }}</div>
+                {% endif %}
+                <h2 class="post-card-title">{{ post.title }}</h2>
+            </header>
+            <div class="post-card-excerpt">
+                {% if post.description %}
+                <p>{{ post.description }}</p>
+                {% elif post.summary %}
+                <p>{{ post.summary }}</p>
+                {% else %}
+                <p></p>
+                {% endif %}
+            </div>
+        </a>
+
+        <footer class="post-card-meta">
+            {% set authors = post.extra.authors | default(value=config.extra.default_authors) %}
+            <ul class="author-list">
+                {% for author_name in authors %}
+                {% set author = get_page(path="author/" ~ author_name ~ ".md") %}
+                <li class="author-list-item">
+                    {% if author.extra.profile_image %}
+                    <a href="{{ author.permalink }}" class="static-avatar">
+                        {% set profile_image = resize_image(path=author.extra.profile_image, width=100, op="fit_width", lazy=true) %}
+                        <img class="author-profile-image" src="{{ profile_image.url }}" alt="{{ author.title }}" />
+                    </a>
+                    {% else %}
+                    <a href="{{ author.permalink }}" class="static-avatar author-profile-image">
+                        {% include "icons/avatar.html" %}
+                    </a>
+                    {% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+            <div class="post-card-byline-content">
+                <span class="post-card-byline-author">
+                    {% if authors | length > 2 %}
+                    Multiple authors
+                    {% else %}
+                        {% for author_name in authors %}
+                        {% set author = get_page(path="author/" ~ author_name ~ ".md") %}
+                        {% if loop.first == false %}
+                        ,
+                        {% endif %}
+                        <a href="{{ author.permalink }}">{{ author.title }}</a>
+                        {% endfor %}
+                    {% endif %}
+                </span>
+                <span class="post-card-byline-date">
+                    {% if post.date %}
+                    {% set date_format = config.extra.date_format | default(value="%B %e, %Y") %}
+                    <time datetime="{{ post.date | date(format="%Y-%m-%d") }}">{{ post.date | date(format=date_format) }}</time>
+                    <span class="bull">&bull;</span>
+                    {% endif %}
+                    {{ post.reading_time }} min{{ post.reading_time | pluralize }} read
+                </span>
+            </div>
+        </footer>
+
+    </div>{#/.post-card-content#}
+
+</article>
+{% endmacro %}
+
