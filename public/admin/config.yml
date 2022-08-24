@@ -1,0 +1,55 @@
+backend:
+  name: git-gateway
+  branch: master # Branch to update (optional; defaults to master)
+
+publish_mode: editorial_workflow
+
+media_folder: "static/images/uploads"
+public_folder: "/images/uploads"
+
+collections:
+  - name: "article"
+    label: "Article"
+    folder: "content/posts"
+    create: true
+    format: "toml-frontmatter"
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    summary: "{{year}}/{{month}}/{{day}} - {{title}}"
+    preview: false
+    fields:
+      - label: "Type"
+        name: "type"
+        widget: "hidden"
+        default: "post"
+
+      - label: "Título [REQUERIDO]"
+        name: "title"
+        hint: "Título do artigo - **deve ter no máximo 60 caracteres**."
+        widget: "string"
+        required: true
+
+      - label: "description [REQUERIDO]"
+        name: "description"
+        hint: "Um subtítulo que será exibido abaixo do título em páginas singulares - **deve ter entre 20 e 60 caracteres**."
+        widget: "string"
+        pattern: [".{20,60}", "Deve ter entre 20 e 60 caracteres"]
+        required: true       
+
+      - label: 'Cover Article'
+        name: 'extra'
+        widget: 'object'
+        fields:
+          - { label: 'Featured Image', name: 'cover_image', widget: 'image' }
+          - { lable: 'Authors', name: 'authors', widget: 'select', multiple: true, options: ["husen", "aurel"] }      
+
+      - label: "Corpo [REQUERIDO]"
+        name: "body"
+        hint: "Conteúdo do artigo."
+        widget: "markdown"
+        required: true
+        
+
+      - label: "Data de publicação [REQUERIDO]"
+        name: "date"
+        hint: "Clique em agora para este artigo ter a data mais próxima da produção original do conteúdo nele contido."
+        widget: "datetime"

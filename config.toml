@@ -2,7 +2,7 @@
 base_url = "https://lolinetbellanotte.pages.dev"
 
 title = "LoliconNetwork"
-description = "The default theme for Ghost, ported to Zola now!"
+description = "LoliconNetwork is a portal of information about Anime, Manga, Games, Film, Social."
 
 # Whether to automatically compile all Sass files in the sass directory
 compile_sass = true
